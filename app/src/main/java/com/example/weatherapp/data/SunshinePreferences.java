@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class SunshinePreferences {
     // Weather location latitude in index 0 and longitude in index 1;
-    private static final double[] DEFAULT_WEATHER_COORDINATES = {22.82, 89.55};
+    private static final double[] DEFAULT_WEATHER_COORDINATES = {22.8456, 89.5403};
     private static final String DEFAULT_WEATHER_LOCATION = "Khulna";
 
     /**
