@@ -2,10 +2,16 @@ package com.example.weatherapp.utilities;
 
 import android.content.Context;
 
+import com.example.weatherapp.models.CurrentWeather;
+import com.example.weatherapp.models.DailyWeather;
+import com.example.weatherapp.models.HourlyWeather;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 public class WeatherJsonResponseUtils {
     //current array from http response
@@ -40,6 +46,10 @@ public class WeatherJsonResponseUtils {
         if (isConnectionOk(jsonResponse)) {
             JSONObject current = jsonResponse.getJSONObject(CURRENT);
 
+            //current weather object
+            CurrentWeather currentWeather = new CurrentWeather();
+
+
             sb.append("Date: ").append(current.getDouble(DATE));
             sb.append("\nSunrise: ").append(current.getDouble(SUNRISE));
             sb.append("\nSunset: ").append(current.getInt(SUNSET));
@@ -54,6 +64,114 @@ public class WeatherJsonResponseUtils {
             sb.append("\nDescription: ").append(current.getJSONArray(WEATHER).getJSONObject(0).getString(DESCRIPTION));
         }
         return sb.toString();
+    }
+
+    /**
+     * retrieving Current weather data
+     *
+     * @param context            application context
+     * @param jsonResponseString is response from api call as string
+     * @return hourly weather data as CurrentWeather object
+     * @throws JSONException because of json parsing
+     */
+    public static CurrentWeather getCurrentWeather(Context context, String jsonResponseString) throws JSONException {
+        JSONObject jsonResponse = new JSONObject(jsonResponseString);
+
+        CurrentWeather currentWeather = new CurrentWeather();
+        if (isConnectionOk(jsonResponse)) {
+            JSONObject current = jsonResponse.getJSONObject(CURRENT);
+
+            //Setting values to current weather
+            currentWeather.setDate(current.getDouble(DATE));
+            currentWeather.setSunrise(current.getDouble(SUNRISE));
+            currentWeather.setSunset(current.getDouble(SUNSET));
+            currentWeather.setTemp(current.getDouble(TEMPERATURE));
+            currentWeather.setFeelsLike(current.getDouble(TEMPERATURE_FEEL_LIKE));
+            currentWeather.setPressure(current.getDouble(ATMOSPHERIC_PRESSURE));
+            currentWeather.setHumidity(current.getDouble(HUMIDITY));
+            currentWeather.setClouds(current.getDouble(CLOUDINESS));
+            currentWeather.setUvIndex(current.getDouble(UV_INDEX));
+            currentWeather.setWindSpeed(current.getDouble(WIND_SPEED));
+            currentWeather.setWeather(current.getString(WEATHER));
+            currentWeather.setWeatherDescription(current.getString(DESCRIPTION));
+
+        }
+        return currentWeather;
+    }
+
+    /**
+     * retrieving hourly weather data
+     *
+     * @param context            application context
+     * @param jsonResponseString is response from api call as string
+     * @return hourly weather data as hourlyWeather arraylist
+     * @throws JSONException because of json parsing
+     */
+    public static ArrayList<HourlyWeather> getHourlyWeather(Context context, String jsonResponseString) throws JSONException {
+
+        ArrayList<HourlyWeather> hourlyWeatherList = new ArrayList<>();
+        JSONObject jsonResponse = new JSONObject(jsonResponseString);
+
+        if (isConnectionOk(jsonResponse)) {
+            JSONArray hourly = jsonResponse.getJSONArray(HOURLY);
+            for (int i = 0; i < hourly.length(); i++) {
+                JSONObject object = hourly.getJSONObject(i);
+                HourlyWeather hourlyWeather = new HourlyWeather();
+
+                //Setting values to hourly weather
+                hourlyWeather.setDate(object.getDouble(DATE));
+                hourlyWeather.setTemp(object.getDouble(TEMPERATURE));
+                hourlyWeather.setFeelsLike(object.getDouble(TEMPERATURE_FEEL_LIKE));
+                hourlyWeather.setPressure(object.getDouble(ATMOSPHERIC_PRESSURE));
+                hourlyWeather.setHumidity(object.getDouble(HUMIDITY));
+                hourlyWeather.setClouds(object.getDouble(CLOUDINESS));
+                hourlyWeather.setUvIndex(object.getDouble(UV_INDEX));
+                hourlyWeather.setWindSpeed(object.getDouble(WIND_SPEED));
+                hourlyWeather.setWeather(object.getString(WEATHER));
+                hourlyWeather.setWeatherDescription(object.getString(DESCRIPTION));
+
+                hourlyWeatherList.add(hourlyWeather);
+            }
+        }
+        return hourlyWeatherList;
+    }
+
+    /**
+     * retrieving daly weather data
+     *
+     * @param context            application context
+     * @param jsonResponseString is response from api call as string
+     * @return hourly weather data as dailyWeather arraylist
+     * @throws JSONException because of json parsing
+     */
+    public static ArrayList<DailyWeather> getDailyWeather(Context context, String jsonResponseString) throws JSONException {
+
+        ArrayList<DailyWeather> dailyWeatherList = new ArrayList<>();
+        JSONObject jsonResponse = new JSONObject(jsonResponseString);
+
+        if (isConnectionOk(jsonResponse)) {
+            JSONArray daily = jsonResponse.getJSONArray(DAILY);
+            for (int i = 0; i < daily.length(); i++) {
+                JSONObject object = daily.getJSONObject(i);
+                DailyWeather dailyWeather = new DailyWeather();
+
+                //Setting values to hourly weather
+                dailyWeather.setDate(object.getDouble(DATE));
+                dailyWeather.setTempMin(object.getJSONObject(TEMPERATURE).getDouble(MINIMUM));
+                dailyWeather.setTempMax(object.getJSONObject(TEMPERATURE).getDouble(MINIMUM));
+                dailyWeather.setSunrise(object.getDouble(SUNRISE));
+                dailyWeather.setSunset(object.getDouble(SUNSET));
+                dailyWeather.setPressure(object.getDouble(ATMOSPHERIC_PRESSURE));
+                dailyWeather.setHumidity(object.getDouble(HUMIDITY));
+                dailyWeather.setUvIndex(object.getDouble(UV_INDEX));
+                dailyWeather.setWindSpeed(object.getDouble(WIND_SPEED));
+                dailyWeather.setWeather(object.getString(WEATHER));
+                dailyWeather.setWeatherDescription(object.getString(DESCRIPTION));
+
+                dailyWeatherList.add(dailyWeather);
+            }
+        }
+        return dailyWeatherList;
     }
 
     /**

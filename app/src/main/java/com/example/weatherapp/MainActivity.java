@@ -3,9 +3,12 @@ package com.example.weatherapp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.weatherapp.data.SunshinePreferences;
@@ -33,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
     private void loadData() {
         double[] location = SunshinePreferences.getPreferredWeatherCoordinates(this);
         new FetchWeatherTask().execute(location);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.menu.forecust_menu)
+            loadData();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.forecust_menu, menu);
+        return true;
     }
 
     class FetchWeatherTask extends AsyncTask<double[], Void, String> {
