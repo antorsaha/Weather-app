@@ -1,4 +1,4 @@
-package com.example.weatherapp;
+package com.example.weatherapp.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,25 +10,34 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weatherapp.R;
+import com.example.weatherapp.adapters.SevenDaysForecastAdapter;
 import com.example.weatherapp.data.SunshinePreferences;
+import com.example.weatherapp.models.DailyWeather;
 import com.example.weatherapp.utilities.NetworkUtils;
 import com.example.weatherapp.utilities.WeatherJsonResponseUtils;
 
+import org.json.JSONException;
+
 import java.net.URL;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    TextView displayTextView;
+    private TextView displayTextView;
+    private RecyclerView itemsRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Display network call result...
-        displayTextView = findViewById(R.id.tv_display);
+        displayTextView = findViewById(R.id.tv_today_forecast);
+        itemsRV = findViewById(R.id.rv_forecast);
 
         loadData();
     }
@@ -36,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
     private void loadData() {
         double[] location = SunshinePreferences.getPreferredWeatherCoordinates(this);
         new FetchWeatherTask().execute(location);
+    }
+
+    public void loadSevenDaysWeather(List<DailyWeather> sevenDayWeatherList){
+        SevenDaysForecastAdapter adapter = new SevenDaysForecastAdapter(sevenDayWeatherList);
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        itemsRV.setLayoutManager(layoutManager);
+        itemsRV.setAdapter(adapter);
     }
 
     @Override
@@ -62,9 +80,7 @@ public class MainActivity extends AppCompatActivity {
             URL requestUrl = NetworkUtils.buildUrl(location);
 
             try {
-                String jsonResponse = NetworkUtils.getResponseFromHttpUrl(requestUrl);
-
-                return WeatherJsonResponseUtils.getCurrentWeatherString(MainActivity.this, jsonResponse);
+                return NetworkUtils.getResponseFromHttpUrl(requestUrl);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -79,9 +95,23 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Data is null", Toast.LENGTH_SHORT).show();
                 return;
             }
-            displayTextView.setText(s);
+            String currentWeatherString = null;
+            List<DailyWeather> sevenDayWeather = null;
+
+            try {
+                currentWeatherString = WeatherJsonResponseUtils.getCurrentWeatherString(getApplicationContext(), s);
+                sevenDayWeather = WeatherJsonResponseUtils.getDailyWeather(getApplicationContext(), s);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (sevenDayWeather == null)
+                Log.d(TAG, "onPostExecute: sevenDayWeather is null");
+            else
+                Log.d(TAG, "onPostExecute: sevenDayWeather Size: " + sevenDayWeather.size());
+            loadSevenDaysWeather(sevenDayWeather);
+            displayTextView.setText(currentWeatherString);
             Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "onPostExecute: data response " + s);
+            Log.d(TAG, "onPostExecute: data response ");
         }
     }
 }

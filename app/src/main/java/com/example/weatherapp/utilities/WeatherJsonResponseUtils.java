@@ -1,6 +1,8 @@
 package com.example.weatherapp.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.weatherapp.models.CurrentWeather;
 import com.example.weatherapp.models.DailyWeather;
@@ -12,8 +14,10 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WeatherJsonResponseUtils {
+    private static final String TAG = "WeatherJsonResponseUtils";
     //current array from http response
     private static final String CURRENT = "current";
     private static final String HOURLY = "hourly";
@@ -21,7 +25,6 @@ public class WeatherJsonResponseUtils {
 
     //get date
     private static final String DATE = "dt";
-
     private static final String SUNRISE = "sunrise";
     private static final String SUNSET = "sunset";
     private static final String TEMPERATURE = "temp";
@@ -36,7 +39,6 @@ public class WeatherJsonResponseUtils {
     private static final String DESCRIPTION = "description";
     private static final String MAXIMUM = "max";
     private static final String MINIMUM = "min";
-    private static final String MOON_PHASE = "moon_phase";
 
     public static String getCurrentWeatherString(Context context, String jsonResponseString) throws JSONException {
 
@@ -45,10 +47,6 @@ public class WeatherJsonResponseUtils {
 
         if (isConnectionOk(jsonResponse)) {
             JSONObject current = jsonResponse.getJSONObject(CURRENT);
-
-            //current weather object
-            CurrentWeather currentWeather = new CurrentWeather();
-
 
             sb.append("Date: ").append(current.getDouble(DATE));
             sb.append("\nSunrise: ").append(current.getDouble(SUNRISE));
@@ -144,21 +142,26 @@ public class WeatherJsonResponseUtils {
      * @return hourly weather data as dailyWeather arraylist
      * @throws JSONException because of json parsing
      */
-    public static ArrayList<DailyWeather> getDailyWeather(Context context, String jsonResponseString) throws JSONException {
+    @SuppressLint("LongLogTag")
+    public static List<DailyWeather> getDailyWeather(Context context, String jsonResponseString) throws JSONException {
 
         ArrayList<DailyWeather> dailyWeatherList = new ArrayList<>();
         JSONObject jsonResponse = new JSONObject(jsonResponseString);
 
+        StringBuilder stringBuilder = new StringBuilder();
+
         if (isConnectionOk(jsonResponse)) {
             JSONArray daily = jsonResponse.getJSONArray(DAILY);
-            for (int i = 0; i < daily.length(); i++) {
+
+            int i;
+            for (i = 0; i < daily.length(); i++) {
                 JSONObject object = daily.getJSONObject(i);
                 DailyWeather dailyWeather = new DailyWeather();
 
-                //Setting values to hourly weather
+                //Setting values to daily weather
                 dailyWeather.setDate(object.getDouble(DATE));
                 dailyWeather.setTempMin(object.getJSONObject(TEMPERATURE).getDouble(MINIMUM));
-                dailyWeather.setTempMax(object.getJSONObject(TEMPERATURE).getDouble(MINIMUM));
+                dailyWeather.setTempMax(object.getJSONObject(TEMPERATURE).getDouble(MAXIMUM));
                 dailyWeather.setSunrise(object.getDouble(SUNRISE));
                 dailyWeather.setSunset(object.getDouble(SUNSET));
                 dailyWeather.setPressure(object.getDouble(ATMOSPHERIC_PRESSURE));
@@ -166,12 +169,22 @@ public class WeatherJsonResponseUtils {
                 dailyWeather.setUvIndex(object.getDouble(UV_INDEX));
                 dailyWeather.setWindSpeed(object.getDouble(WIND_SPEED));
                 dailyWeather.setWeather(object.getString(WEATHER));
-                dailyWeather.setWeatherDescription(object.getString(DESCRIPTION));
+                dailyWeather.setWeatherDescription(object.getJSONArray("weather")
+                        .getJSONObject(0).getString(DESCRIPTION));
 
                 dailyWeatherList.add(dailyWeather);
+                stringBuilder.append(object.getDouble(DATE)).append("\t")
+                        .append(object.getJSONObject(TEMPERATURE).getDouble(MINIMUM)).append("\t")
+                        .append(object.getJSONObject(TEMPERATURE).getDouble(MAXIMUM)).append("\t")
+                        .append(object.getDouble(UV_INDEX));
             }
+            Log.d(TAG, "getDailyWeather: i = " + i);
         }
+        else
+            Log.d(TAG, "getDailyWeather: Connection is not okay");
+        Log.d(TAG, "getDailyWeather: " + dailyWeatherList.size());
         return dailyWeatherList;
+        //return stringBuilder.toString();
     }
 
     /**
