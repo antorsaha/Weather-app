@@ -1,8 +1,8 @@
 package com.example.weatherapp.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -25,8 +25,9 @@ import org.json.JSONException;
 import java.net.URL;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SevenDaysForecastAdapter.ItemClickHandler {
     private static final String TAG = "MainActivity";
+    public static final String putDailyData = "dailyData";
 
     private TextView displayTextView;
     private RecyclerView itemsRV;
@@ -47,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
         new FetchWeatherTask().execute(location);
     }
 
-    public void loadSevenDaysWeather(List<DailyWeather> sevenDayWeatherList){
-        SevenDaysForecastAdapter adapter = new SevenDaysForecastAdapter(sevenDayWeatherList);
+
+    public void loadSevenDaysWeather(List<DailyWeather> sevenDayWeatherList) {
+        SevenDaysForecastAdapter adapter = new SevenDaysForecastAdapter(sevenDayWeatherList, this);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -67,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.forecust_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onClick(DailyWeather weather) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(putDailyData, /*(new Gson()).toJson(weather)*/ weather);
+        startActivity(intent);
     }
 
     class FetchWeatherTask extends AsyncTask<double[], Void, String> {
@@ -104,14 +113,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (sevenDayWeather == null)
-                Log.d(TAG, "onPostExecute: sevenDayWeather is null");
-            else
-                Log.d(TAG, "onPostExecute: sevenDayWeather Size: " + sevenDayWeather.size());
             loadSevenDaysWeather(sevenDayWeather);
             displayTextView.setText(currentWeatherString);
             Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "onPostExecute: data response ");
         }
     }
 }

@@ -16,14 +16,19 @@ import com.example.weatherapp.models.DailyWeather;
 import java.util.List;
 
 public class SevenDaysForecastAdapter extends RecyclerView.Adapter<SevenDaysForecastAdapter.ItemViewHolder> {
-    private final List<DailyWeather> dailyWeatherList;
     private static final String TAG = "SevenDaysForecastAdapter";
+    private final List<DailyWeather> dailyWeatherList;
+    private final ItemClickHandler itemClickHandler;
 
     @SuppressLint("LongLogTag")
-    public SevenDaysForecastAdapter(List<DailyWeather> weatherList) {
+    public SevenDaysForecastAdapter(List<DailyWeather> weatherList, ItemClickHandler clickHandler) {
         this.dailyWeatherList = weatherList;
+        itemClickHandler = clickHandler;
         Log.d(TAG, "SevenDaysForecastAdapter: constructor with data size: " + dailyWeatherList.size());
+    }
 
+    public interface ItemClickHandler {
+        void onClick(DailyWeather weather);
     }
 
     @SuppressLint("LongLogTag")
@@ -46,11 +51,11 @@ public class SevenDaysForecastAdapter extends RecyclerView.Adapter<SevenDaysFore
     @Override
     public int getItemCount() {
         //return 10;
-        Log.d(TAG, "getItemCount: "+ dailyWeatherList.size());
+        Log.d(TAG, "getItemCount: " + dailyWeatherList.size());
         return dailyWeatherList.size();
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView date;
         TextView tempMinMax;
 
@@ -58,6 +63,8 @@ public class SevenDaysForecastAdapter extends RecyclerView.Adapter<SevenDaysFore
             super(itemView);
             date = itemView.findViewById(R.id.item_date);
             tempMinMax = itemView.findViewById(R.id.item_min_max_temp);
+
+            itemView.setOnClickListener(this);
         }
 
         @SuppressLint("LongLogTag")
@@ -67,6 +74,13 @@ public class SevenDaysForecastAdapter extends RecyclerView.Adapter<SevenDaysFore
             tempMinMax.setText(weather.getTempMax() + ", " + weather.getTempMin());
             //date.setText(position);
             Log.d(TAG, "bind: is called and bind successful");
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAbsoluteAdapterPosition();
+            DailyWeather weather = dailyWeatherList.get(adapterPosition);
+            itemClickHandler.onClick(weather);
         }
     }
 }

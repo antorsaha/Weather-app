@@ -1,6 +1,8 @@
 package com.example.weatherapp.models;
 
-public class DailyWeather extends Weather {
+import java.io.Serializable;
+
+public class DailyWeather extends Weather implements Serializable {
     private double sunrise;
     private double sunset;
     private double tempMin;

@@ -13,4 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="titleTextStyle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#DBDBDB</item>
+    </style>
+
+    <style name="valueTextStyle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#DBDBDB</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
