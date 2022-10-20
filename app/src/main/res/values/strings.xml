@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Weather app</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_setting">Setting</string>
     <string name="seven_days_forecast">7 Days forecast</string>
     <string name="today_days_forecast">Today</string>
 </resources>

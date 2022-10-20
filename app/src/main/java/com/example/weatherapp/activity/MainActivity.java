@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements SevenDaysForecast
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //getSupportActionBar().hide();
 
         displayTextView = findViewById(R.id.tv_today_forecast);
         itemsRV = findViewById(R.id.rv_forecast);
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements SevenDaysForecast
         new FetchWeatherTask().execute(location);
     }
 
-
     public void loadSevenDaysWeather(List<DailyWeather> sevenDayWeatherList) {
         SevenDaysForecastAdapter adapter = new SevenDaysForecastAdapter(sevenDayWeatherList, this);
 
@@ -60,8 +60,13 @@ public class MainActivity extends AppCompatActivity implements SevenDaysForecast
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.menu.forecust_menu)
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_refresh)
             loadData();
+        else if (itemId == R.id.action_setting){
+            Intent settingIntent = new Intent(this, SettingActivity.class);
+            startActivity(settingIntent);
+        }
         return true;
     }
 

@@ -14,8 +14,8 @@
         android:layout_marginTop="16dp"
         android:text="Sun Fransisco"
         android:textColor="#DBDBDB"
-        android:textStyle="bold"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,63 +55,63 @@
 
     <TextView
         android:id="@+id/textView5"
+        style="@style/titleTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Temp"
-        style="@style/titleTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
         android:id="@+id/tv_temp"
+        style="@style/valueTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="32"
-        style="@style/valueTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/textView7"
+        style="@style/titleTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wind"
-        style="@style/titleTextStyle"
         app:layout_constraintEnd_toStartOf="@+id/textView9"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/tv_wind"
+        style="@style/valueTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="10 m/s"
-        style="@style/valueTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/textView7"
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView9"
+        style="@style/titleTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Humiadity"
-        style="@style/titleTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/iv_weather_icon"
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/tv_humiadity"
+        style="@style/valueTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="17%"
-        style="@style/valueTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/textView9"
         app:layout_constraintStart_toStartOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -128,11 +128,11 @@
 
     <TextView
         android:id="@+id/tv_sun_rise"
+        style="@style/valueTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="5.00 am"
-        style="@style/valueTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -149,11 +149,11 @@
 
     <TextView
         android:id="@+id/tv_sun_set"
+        style="@style/valueTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="7.30 pm"
-        style="@style/valueTextStyle"
         app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintStart_toStartOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
