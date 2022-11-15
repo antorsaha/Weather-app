@@ -8,13 +8,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class NetworkUtils {
 
-    /**
-     * Query parameter
-     */
+    //Query parameter
     final static String QUERY_PRAM = "?";
     final static String LAT_PRAM = "lat";
     final static String LOT_PRAM = "lon";
@@ -23,14 +22,17 @@ public class NetworkUtils {
     final static String EXCLUDE_PRAM = "exclude";
     final static String FORMAT_PRAM = "format";
     private static final String TAG = "NetworkUtils";
+
     //api base url
     private static final String WEATHER_FORECAST_BASE_URL =
             "https://api.openweathermap.org/data/2.5/onecall?";
+
     // values for api call
     private static final String FORMAT = "json";
     private static final String APP_ID = "a242f3acd8adac5febdb6ee2df3bb784";
-    private static final String UNITS = "metric";
     private static final String EXCLUDE = "minutely";
+
+    private static String units = "metric";
 
     /**
      * build api query url
@@ -43,7 +45,7 @@ public class NetworkUtils {
                 .appendQueryParameter(LAT_PRAM, location[0] + "")
                 .appendQueryParameter(LOT_PRAM, location[1] + "")
                 .appendQueryParameter(APP_ID_PRAM, APP_ID)
-                .appendQueryParameter(UNITS_PRAM, UNITS)
+                .appendQueryParameter(UNITS_PRAM, units)
                 .appendQueryParameter(FORMAT_PRAM, FORMAT)
                 .appendQueryParameter(EXCLUDE_PRAM, EXCLUDE)
                 .build();
@@ -85,4 +87,13 @@ public class NetworkUtils {
             urlConnection.disconnect();
         }
     }
+
+    /**
+     * Setter for units
+     */
+    public static void setUnits(String unit){
+        if (Objects.equals(unit, "metric") || Objects.equals(unit, "imperial"))
+            units = unit;
+    }
+
 }

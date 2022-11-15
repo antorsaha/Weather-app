@@ -3,8 +3,13 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="sound_effect"
-        android:title="Sound effects"
         android:summaryOff="off"
         android:summaryOn="on"
-        />
+        android:title="Sound effects" />
+    <ListPreference
+        android:defaultValue="@string/pref_units_def_val"
+        android:key="@string/pref_units_key"
+        android:entries="@array/unit_preference"
+        android:entryValues="@array/unit_preference"
+        android:title="@string/pref_units_title" />
 </PreferenceScreen>

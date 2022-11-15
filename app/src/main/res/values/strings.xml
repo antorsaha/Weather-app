@@ -4,4 +4,14 @@
     <string name="action_setting">Setting</string>
     <string name="seven_days_forecast">7 Days forecast</string>
     <string name="today_days_forecast">Today</string>
+    
+    <string name="pref_units_key" translatable="false">units</string>
+    <string name="pref_units_summary">celsius or kelvin</string>
+    <string name="pref_units_title">Units</string>
+    <string name="pref_units_def_val">metric</string>
+
+    <array name="unit_preference">
+        <item>metric</item>
+        <item>imperial</item>
+    </array>
 </resources>

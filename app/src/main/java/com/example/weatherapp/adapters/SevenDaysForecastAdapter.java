@@ -50,7 +50,6 @@ public class SevenDaysForecastAdapter extends RecyclerView.Adapter<SevenDaysFore
     @SuppressLint("LongLogTag")
     @Override
     public int getItemCount() {
-        //return 10;
         Log.d(TAG, "getItemCount: " + dailyWeatherList.size());
         return dailyWeatherList.size();
     }
@@ -67,13 +66,10 @@ public class SevenDaysForecastAdapter extends RecyclerView.Adapter<SevenDaysFore
             itemView.setOnClickListener(this);
         }
 
-        @SuppressLint("LongLogTag")
         void bind(int position) {
             DailyWeather weather = dailyWeatherList.get(position);
             date.setText(String.valueOf(weather.getDate()));
             tempMinMax.setText(weather.getTempMax() + ", " + weather.getTempMin());
-            //date.setText(position);
-            Log.d(TAG, "bind: is called and bind successful");
         }
 
         @Override
