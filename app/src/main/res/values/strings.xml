@@ -10,8 +10,7 @@
     <string name="pref_units_title">Units</string>
     <string name="pref_units_def_val">metric</string>
 
-    <array name="unit_preference">
-        <item>metric</item>
-        <item>imperial</item>
-    </array>
+    <string name="content_authority">com.example.weatherapp</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>

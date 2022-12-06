@@ -1,19 +1,28 @@
 package com.example.weatherapp.models;
 
 public abstract class Weather {
-    private double date;
+    private long date;
     private double pressure;
     private double humidity;
     private double uvIndex;
     private double windSpeed;
     private String weather;
     private String weatherDescription;
+    private double clouds;
+
+    public double getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(double clouds) {
+        this.clouds = clouds;
+    }
 
     public double getDate() {
         return date;
     }
 
-    public void setDate(double date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
